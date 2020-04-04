@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd
+
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--  spring <util>元素的测试  -->
+    <bean id="utilClass" class="UtilClassImpl">
+        <property name="constant" ref="constant_ref"/>
+        <property name="list" ref="list_ref"/>
+        <property name="map" ref="map_ref"/>
+        <property name="set" ref="set_ref"/>
+        <property name="properties" ref="properties_ref"/>
+        <property name="property_path" ref="property_path_ref"/>
+    </bean>
+
+    <!--  <util:constant>  -->
+    <util:constant id="constant_ref" static-field="Constant.NAME"/>
+
+    <!--  <util:list>  -->
+    <util:list id="list_ref" >
+        <value>lrf</value>
+        <value>lrf111</value>
+        <value>lrf222</value>
+        <value>lrf333</value>
+    </util:list>
+
+    <!--  <util:map>  -->
+    <util:map id="map_ref">
+        <entry key="name" value="lirufeng"/>
+        <entry key="gender" value="man"/>
+        <entry key="phone" value="88888888"/>
+    </util:map>
+
+    <!--  <util:set>  -->
+    <util:set id="set_ref">
+        <value>myset</value>
+        <value>myset111</value>
+        <value>myset222</value>
+        <value>myset333</value>
+    </util:set>
+
+    <!--  <util:properties>  -->
+    <util:properties id="properties_ref" location="conf.properties"/>
+
+    <!--  <util:properties-path> 引用一个bean的属性，并将其暴露为bean -->
+    <util:property-path id="property_path_ref" path="property_path.name"/>
+    <bean id="property_path" class="PropertyPath">
+        <property name="name" value="Lrf"/>
+    </bean>
+
+    <!--  ============================================分割线====================================  -->
+    <!--  <util:properties>还可以这么用  -->
+    <util:properties id="properties_another" location="conf.properties"/>
+    <bean id="anotherWay" class="AnotherWayGetPropertiesValue">
+        <property name="name" value="#{properties_another['person.name']}"/>
+        <property name="gender" value="#{properties_another['person.gender']}"/>
+    </bean>
+
+    <!--  顺便说一下，<context:property-placeholder>,与上面的<util:properties>有些类似  -->
+    <context:property-placeholder location="conf.properties"/>
+    <bean id="property_placeholder" class="PropertyPlaceholder">
+        <property name="name" value="${person.name}"/>
+        <property name="gender" value="${person.gender}"/>
+    </bean>
+
+</beans>
